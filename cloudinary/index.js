@@ -10,7 +10,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "Mern-Stack",
+    folder: "EventHive",
     allowedFormats: ["jpeg", "jpg", "png"],
   },
 });
