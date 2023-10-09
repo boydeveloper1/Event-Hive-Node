@@ -32,11 +32,10 @@ router.get("/:eid", events.getEventById);
 
 router.use(checkAuth);
 
-// creating an event - Used in the dashbaord / menu
-// updating the boughtEvent array of the user
-
+// creating a boughtEvent array of the user
 router.post("/:uid", events.boughtEvent);
 
+// creating an event - Used in the dashbaord / menu
 router.post(
   "/",
   upload.single("image"),

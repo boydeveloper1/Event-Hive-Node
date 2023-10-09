@@ -15,15 +15,16 @@ const bodyParser = require("body-parser");
 
 const ExpressError = require("./utilities/ExpressError");
 
-// importing Routes
+// importing event Routes
 const eventsRoutes = require("./routes/events");
 
-// importing Routes
+// importing users Routes
 const usersRoutes = require("./routes/users");
 
-const User = require("./models/user");
+// importing contact toutes
+const contactRoutes = require("./routes/contacts");
 
-const boughEvent = require("./models/boughtEvent");
+const User = require("./models/user");
 
 const dbUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@event-hive.hfexoxu.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
@@ -64,8 +65,11 @@ app.use((req, res, next) => {
 // All events routes hit this middleware
 app.use("/api/events", eventsRoutes);
 
-// All events routes hit this middleware
+// All users routes hit this middleware
 app.use("/api/users", usersRoutes);
+
+// All contact routes hits this middleware
+app.use("/api/secured", contactRoutes);
 
 app.use(cors());
 
@@ -88,7 +92,7 @@ app.post("/create-payment-intent", async (req, res, next) => {
     return next(error);
   }
 
-  // find the user that just bought the ticket
+  // find the user that just bought the ticket - becuase a user should have created an account before buying
   let userThatBoughtTicket;
   try {
     userThatBoughtTicket = await User.findById(user);
