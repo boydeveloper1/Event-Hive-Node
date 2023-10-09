@@ -14,7 +14,7 @@ const contactForm = async (req, res, next) => {
   }
 
   const { name, email, message } = req.body;
-  console.log(req.body);
+
   // this creates a new Contact message in the database
   const createdContactMessage = new Contact({
     name,

@@ -393,7 +393,7 @@ const boughtEvent = async (req, res, next) => {
       newBoughtEvents.push(newBoughEvent);
     }
   }
-  console.log(newBoughtEvents);
+
   // push the bought tickets inside the boughtEvent document
   try {
     await BoughtEvent.insertMany(newBoughtEvents);
