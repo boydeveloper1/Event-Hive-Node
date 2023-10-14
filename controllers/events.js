@@ -210,7 +210,7 @@ const createEvent = async (req, res, next) => {
     session.startTransaction();
     await createdEvent.save({ session: session });
     // adding the id of createdEvent to the user, mongoose adds just the ID
-    user.events.push();
+    user.events.push(createdEvent);
     await user.save({ session: session });
     await session.commitTransaction();
   } catch (error) {
@@ -365,8 +365,6 @@ const boughtEvent = async (req, res, next) => {
           // returning the new document
           { new: true }
         );
-        // pushing it into the array of newBoughEvents previously created
-        newBoughtEvents.push(updatedBoughtEvent);
       } catch (error) {
         const err = new ExpressError("Could not purchase ticket", 500);
         return next(err);
@@ -393,18 +391,23 @@ const boughtEvent = async (req, res, next) => {
       newBoughtEvents.push(newBoughEvent);
     }
   }
+  console.log(newBoughtEvents);
 
   // push the bought tickets inside the boughtEvent document
   try {
     await BoughtEvent.insertMany(newBoughtEvents);
-    const boughtEventIds = newBoughtEvents.map((event) => event.id);
+    console.log("Successfully inserted newBoughtEvents into MongoDB");
 
-    // Push the IDs of new or updated BoughtEvents to the user's boughtEvents array
+    const boughtEventIds = newBoughtEvents.map((event) => event.id);
+    console.log(boughtEventIds);
+
+    // // Push the IDs of new or updated BoughtEvents to the user's boughtEvents array
     userThatBoughtTicket.boughtEvents.push(...boughtEventIds);
 
     // Save the user and BoughtEvents\
     await userThatBoughtTicket.save();
   } catch (error) {
+    console.error("Error inserting newBoughtEvents into MongoDB:", error);
     const err = new ExpressError(
       "Issues With buying your tickets. Try again later",
       500

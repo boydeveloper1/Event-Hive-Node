@@ -15,7 +15,7 @@ const { storage } = require("../cloudinary");
 // telling multer to use cloudinary storage
 const upload = multer({ storage });
 
-// Gets all the users
+// Gets specific user
 router.get("/:uid", users.getUser);
 
 // Create a new user
