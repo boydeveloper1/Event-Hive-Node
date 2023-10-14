@@ -391,15 +391,12 @@ const boughtEvent = async (req, res, next) => {
       newBoughtEvents.push(newBoughEvent);
     }
   }
-  console.log(newBoughtEvents);
 
   // push the bought tickets inside the boughtEvent document
   try {
     await BoughtEvent.insertMany(newBoughtEvents);
-    console.log("Successfully inserted newBoughtEvents into MongoDB");
 
     const boughtEventIds = newBoughtEvents.map((event) => event.id);
-    console.log(boughtEventIds);
 
     // // Push the IDs of new or updated BoughtEvents to the user's boughtEvents array
     userThatBoughtTicket.boughtEvents.push(...boughtEventIds);
@@ -407,7 +404,6 @@ const boughtEvent = async (req, res, next) => {
     // Save the user and BoughtEvents\
     await userThatBoughtTicket.save();
   } catch (error) {
-    console.error("Error inserting newBoughtEvents into MongoDB:", error);
     const err = new ExpressError(
       "Issues With buying your tickets. Try again later",
       500
